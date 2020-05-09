@@ -41,6 +41,8 @@ import com.jacky.finalexam.utils.Util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = "CameraView";
@@ -217,13 +219,16 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
                 if (!isRunning) {
                     isRunning = true;
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.submit(
                     new Thread(new Runnable() {
                         public void run() {
                             result = Yolo.Detect(inputBitmap);
                             Log.d(TAG, "result: " + Arrays.toString(result));
                             isRunning = false;
                         }
-                    }).start();
+                    }));
+                    service.shutdown();
                 }
                 if (null != result) {
                     drawDetect(result, (int) mWidth, (int) mHeight, rolatedeg);

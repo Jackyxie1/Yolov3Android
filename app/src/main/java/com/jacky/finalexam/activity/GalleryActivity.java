@@ -42,13 +42,24 @@ public class GalleryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 //        CameraView cameraView = findViewById(R.id.camera);
+        initView();
+        Util.loadLabels(resultLabel, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         try {
             initYolo();
         } catch (IOException e) {
             Log.e("MainActivity", "init yolo error");
         }
-        initView();
-        Util.loadLabels(resultLabel, this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Yolo = null;
     }
 
     private void initYolo() throws IOException {
@@ -108,11 +119,11 @@ public class GalleryActivity extends BaseActivity {
             return;
         }
         Bitmap rgba = bmp.copy(Bitmap.Config.ARGB_8888, true);
-        Bitmap input_bmp = Bitmap.createScaledBitmap(rgba, dims[2], dims[3], false);
+//        Bitmap input_bmp = Bitmap.createScaledBitmap(rgba, dims[2], dims[3], false);
         try {
 
             long startTime = System.currentTimeMillis();
-            float[] result = Yolo.Detect(input_bmp);
+            float[] result = Yolo.Detect(rgba);
             if (result == null) {
                 out.setText(getResources().getString(R.string.predict_result));
                 Log.d(TAG, "predict result is null");
