@@ -120,7 +120,7 @@ public class CameraFragment extends Fragment implements ActivityCompat.OnRequest
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            Image im = reader.acquireNextImage(); //
+            Image im = reader.acquireLatestImage(); //
             int planesLength = im.getPlanes().length;
             int width = im.getWidth();
             int height = im.getHeight();
