@@ -108,6 +108,8 @@ public class GalleryActivity extends BaseActivity {
                     }
                     predict(imagePath);
                     break;
+                default:
+                    break;
             }
         }
     }
